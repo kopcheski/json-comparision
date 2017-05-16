@@ -4,6 +4,12 @@ import com.kopcheski.jsoncomparision.service.JsonPair;
 import com.kopcheski.jsoncomparision.Sides;
 import java.util.HashMap;
 import java.util.Map;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
+import static javax.ejb.ConcurrencyManagementType.CONTAINER;
+import javax.ejb.Lock;
+import javax.ejb.LockType;
+import static javax.ejb.LockType.WRITE;
 import javax.inject.Singleton;
 
 /**
@@ -11,6 +17,7 @@ import javax.inject.Singleton;
  * 
  * @author kopcheski
  */
+@ConcurrencyManagement(CONTAINER)
 @Singleton
 public class Repository {
     
@@ -21,6 +28,7 @@ public class Repository {
         return sideValue;
     }
 
+    @Lock(WRITE)
     public void add(String id, Sides sides, byte[] objectb64) {
         JsonPair sideValueRepo = repo.get(id);
         JsonPair actual;
